@@ -1,0 +1,32 @@
+# create-cloud-vm.yml
+
+- name: 'Deploy our Cloud-init VMs'
+
+  hosts: 192.168.2.52
+  become: true
+
+  tasks:
+    - name: Clone cloud-init template
+      community.general.proxmox_kvm:
+        node: dralpve1
+        vmid: 9000 # Template VMID
+        name: DRALMK01 (Minikube Dev) # Development Minkube
+        api_user: ansible@pam
+        api_token_id: ansible_pve_token
+        api_host: 192.168.2.52
+        state: present
+        api_token_secret: ca6b74e4-d71e-41c6-a007-6bc9caff8bf2
+        storage: local-lvm
+        timeout: 90
+        clone: 9000 # Clone the template VMID 9000
+        newid: 500 # Assign a new VMID (adjust as needed)
+
+    - name: Start the cloned VM
+      community.general.proxmox_kvm:
+        node: dralpve1
+        vmid: 500 # Start the cloned VM using its new VMID
+        api_user: ansible@pam
+        api_token_id: ansible_pve_token
+        api_token_secret: ca6b74e4-d71e-41c6-a007-6bc9caff8bf2
+        api_host: 192.168.2.52
+        state: started
