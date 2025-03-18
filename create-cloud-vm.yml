@@ -10,16 +10,17 @@
       community.general.proxmox_kvm:
         node: dralpve1
         vmid: 9000 # Template VMID
-        name: DRALMK01 (Minikube Dev) # Development Minkube
+        name: DRALMK01 # Development Minkube
         api_user: ansible@pam
         api_token_id: ansible_pve_token
         api_host: 192.168.2.52
         state: present
         api_token_secret: ca6b74e4-d71e-41c6-a007-6bc9caff8bf2
-        storage: local-lvm
+        # storage: local-lvm
+        full: no
         timeout: 90
         clone: 9000 # Clone the template VMID 9000
-        newid: 500 # Assign a new VMID (adjust as needed)
+        newid: 500
 
     - name: Start the cloned VM
       community.general.proxmox_kvm:
