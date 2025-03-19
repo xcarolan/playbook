@@ -21,29 +21,11 @@
         group: scarolan
         mode: '0644'
     - name: update zshrc
-      shell: sed -i 's/(git/(git zsh-autosuggestions)/' /home/scarolan/.zshrc
+        shell: sed -i 's/(git/(git zsh-autosuggestions)/' /home/scarolan/.zshrc
     - name: Install Neovim
-      ansible.builtin.git:
-        repo: https://github.com/neovim/neovim.git
-        dest: "{{ lookup('ansible.builtin.env', 'HOME')}}/neovim"
+        ansible.builtin.git:
+        repo: git@github.com:neovim/neovim.git
+        dest: "{{ lookup('ansible.biiltin.env', 'HOME')}}"
         single_branch: yes
         version: master
-    - name: Neovim dependencies
-      become: true
-      ansible.builtin.apt:
-        pkg:
-        - cmake
-        - gettext
-        - lua5.1 
-        - liblua5.1-0-dev
-    - name: neovim
-      make: 
-        chdir: "{{ lookup('ansible.builtin.env', 'HOME')}}/neovim"
-        params:
-          CMAKE_BUILD_TYPE: "RelWithDebInfo"
-    - name: neovim install
-      become: true
-      make: 
-        chdir: "{{ lookup('ansible.builtin.env', 'HOME')}}/neovim"
-        target: install 
-
+      
